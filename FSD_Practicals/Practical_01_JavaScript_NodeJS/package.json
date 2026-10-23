@@ -1,0 +1,13 @@
+{
+  "name": "practical-01-javascript-nodejs",
+  "version": "1.0.0",
+  "description": "Practical 1: JavaScript, Node.js and JSON",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "hello": "node script.js"
+  },
+  "keywords": ["fsd", "javascript", "nodejs"],
+  "author": "Student",
+  "license": "ISC"
+}

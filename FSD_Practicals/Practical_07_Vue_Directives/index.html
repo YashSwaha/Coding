@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 7: Vue 3 Custom Directives</title>
+
+  <!-- Load Vue.js 3 via official CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f8fafc; color: #1e293b; }
+    .container { max-width: 700px; margin: auto; }
+    h1 { color: #0f766e; text-align: center; margin-bottom: 25px; }
+    .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+    h2 { color: #0d9488; font-size: 1.2rem; margin-top: 0; }
+    .interactive-box { padding: 12px; background: #f0fdfa; border: 1px dashed #0d9488; border-radius: 6px; margin-top: 10px; }
+    .hint { font-size: 0.85rem; color: #64748b; margin-top: 6px; }
+    input[type="text"] { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 65%; }
+    button { padding: 8px 14px; background: #0d9488; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0f766e; }
+    ul { margin: 10px 0 0 20px; padding: 0; }
+    li.list-item { padding: 4px 0; }
+  </style>
+</head>
+<body>
+
+  <div id="app" class="container">
+    <h1>Vue.js 3 Custom Directives</h1>
+
+    <!-- 1. Custom Directive: Transform Text to Uppercase on Click -->
+    <div class="card">
+      <h2>1. Directive: v-uppercase</h2>
+      <p>Transforms the element's text to UPPERCASE when clicked.</p>
+      <div v-uppercase class="interactive-box">
+        👉 click this text to convert it to uppercase!
+      </div>
+      <p class="hint">Registered via <code>app.directive('uppercase', { mounted(el) { ... } })</code></p>
+    </div>
+
+    <!-- 2. Custom Directive: Dynamic List -->
+    <div class="card">
+      <h2>2. Directive: v-dynamic-list</h2>
+      <p>Renders and updates a list DOM structure dynamically through a custom directive.</p>
+      
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <input type="text" v-model="newItem" placeholder="Enter a new item..." @keyup.enter="addItem">
+        <button @click="addItem">Add to List</button>
+      </div>
+
+      <!-- Directive attached to <ul> receiving items array -->
+      <ul v-dynamic-list="topics"></ul>
+      <p class="hint">The custom directive listens to binding changes and dynamically appends <code>&lt;li&gt;</code> elements.</p>
+    </div>
+
+    <!-- 3. Custom Directive: Format Date -->
+    <div class="card">
+      <h2>3. Directive: v-format-date</h2>
+      <p>Formats raw ISO date strings into clean, human-readable date formats.</p>
+
+      <div>
+        <p><strong>Raw ISO Date:</strong> {{ rawDateString }}</p>
+        <p><strong>Formatted via v-format-date:</strong></p>
+        <div class="interactive-box" style="font-weight: bold; color: #047857;" v-format-date="rawDateString"></div>
+      </div>
+      <p class="hint">Registered via <code>app.directive('format-date', { mounted, updated })</code></p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue;
+
+    const app = createApp({
+      setup() {
+        // Reactive state
+        const topics = ref([
+          "Vue.js Template Syntax",
+          "Vue Directives Lifecycle",
+          "Reactive State Management"
+        ]);
+        const newItem = ref("");
+        const rawDateString = ref(new Date().toISOString());
+
+        const addItem = () => {
+          if (newItem.value.trim() !== "") {
+            topics.value.push(newItem.value.trim());
+            newItem.value = "";
+          }
+        };
+
+        return { topics, newItem, rawDateString, addItem };
+      }
+    });
+
+    // =========================================================
+    // DIRECTIVE 1: v-uppercase
+    // Attaches a click event listener that transforms text to uppercase
+    // =========================================================
+    app.directive('uppercase', {
+      mounted(el) {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+          el.innerText = el.innerText.toUpperCase();
+        });
+      }
+    });
+
+    // =========================================================
+    // DIRECTIVE 2: v-dynamic-list
+    // Dynamically creates <li> elements for each item in the passed array
+    // =========================================================
+    function updateDynamicList(el, items) {
+      el.innerHTML = ''; // Clear existing DOM list
+      if (Array.isArray(items)) {
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'list-item';
+          li.innerText = item;
+          el.appendChild(li);
+        });
+      }
+    }
+
+    app.directive('dynamic-list', {
+      mounted(el, binding) {
+        updateDynamicList(el, binding.value);
+      },
+      updated(el, binding) {
+        updateDynamicList(el, binding.value);
+      }
+    });
+
+    // =========================================================
+    // DIRECTIVE 3: v-format-date
+    // Formats date string into human-readable representation
+    // =========================================================
+    function applyDateFormat(el, dateInput) {
+      const parsed = new Date(dateInput);
+      if (isNaN(parsed.getTime())) {
+        el.innerText = 'Invalid Date';
+      } else {
+        el.innerText = parsed.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+    }
+
+    app.directive('format-date', {
+      mounted(el, binding) {
+        applyDateFormat(el, binding.value);
+      },
+      updated(el, binding) {
+        applyDateFormat(el, binding.value);
+      }
+    });
+
+    // Mount Vue App
+    app.mount('#app');
+  </script>
+
+</body>
+</html>

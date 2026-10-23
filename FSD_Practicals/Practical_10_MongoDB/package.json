@@ -1,0 +1,12 @@
+{
+  "name": "practical-10-mongodb",
+  "version": "1.0.0",
+  "description": "Practical 10: Node.js and MongoDB CRUD Operations",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+}

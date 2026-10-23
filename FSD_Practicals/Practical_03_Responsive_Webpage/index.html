@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- 1. The Viewport Meta Tag: Ensures mobile browsers scale page to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical 3: Responsive Webpage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- 3. Responsive text using the vw unit -->
+    <h1 class="responsive-title">Responsive Design Lab</h1>
+    <p class="description">
+      Resize your browser window or switch to device mode in Developer Tools to see this page adapt!
+    </p>
+
+    <div class="content-grid">
+      <!-- Left Column: Responsive Image Demonstration -->
+      <div class="card">
+        <h3>2. Responsive Image Demo</h3>
+        <p>Using <code>width: 100%</code> and <code>height: auto</code> so image scales smoothly:</p>
+        
+        <!-- Scalable vector responsive image (works 100% offline) -->
+        <svg class="responsive-img" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="240" fill="#2b6cb0" rx="8"/>
+          <circle cx="200" cy="100" r="45" fill="#f6e05e"/>
+          <text x="200" y="180" font-family="Arial" font-size="20" fill="#ffffff" text-anchor="middle">Responsive Vector Graphic</text>
+          <text x="200" y="210" font-family="Arial" font-size="14" fill="#e2e8f0" text-anchor="middle">max-width: 100% | height: auto</text>
+        </svg>
+      </div>
+
+      <!-- Right Column: Explanations of Responsive Concepts -->
+      <div class="card">
+        <h3>Concepts Demonstrated</h3>
+        
+        <div class="info-box">
+          <strong>1. Viewport Meta Tag:</strong>
+          <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>
+          sets viewport width to device width to prevent mobile scaling glitches.
+        </div>
+
+        <div class="info-box">
+          <strong>2. Responsive Text (vw unit):</strong>
+          Main title uses <code>font-size: 5vw;</code>. 5vw equals 5% of the viewport width.
+        </div>
+
+        <div class="info-box">
+          <strong>3. Media Queries:</strong>
+          On desktop, columns display side-by-side. When screen width is <strong>&le; 600px</strong>, <code>@media (max-width: 600px)</code> switches to a stacked vertical column layout.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

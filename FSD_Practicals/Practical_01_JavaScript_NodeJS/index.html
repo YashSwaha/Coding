@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practical 1: JavaScript, Node.js and JSON</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f9f9f9; color: #333; }
+    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    h1 { color: #0066cc; }
+    pre { background: #eee; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    button { padding: 8px 16px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0052a3; }
+  </style>
+</head>
+<body>
+
+  <!-- Application Title -->
+  <h1 id="appTitle">Loading Application Title...</h1>
+
+  <!-- 1. Embedded JavaScript Demonstration -->
+  <div class="card">
+    <h2>1. Embedded JavaScript Demo</h2>
+    <p id="embeddedOutput">Click the button below to execute embedded JavaScript.</p>
+    <button onclick="displayGreeting()">Run Embedded Script</button>
+  </div>
+
+  <!-- 2. Node.js Installation Instructions -->
+  <div class="card">
+    <h2>2. Instructions to Install Node.js</h2>
+    <ol>
+      <li>Visit the official website: <strong>https://nodejs.org</strong></li>
+      <li>Download the <strong>LTS (Long Term Support)</strong> installer for your OS (Windows, Mac, or Linux).</li>
+      <li>Run the installer and follow standard on-screen prompts.</li>
+      <li>Open your command prompt or terminal and verify installation by running:
+        <pre>node -v
+npm -v</pre>
+      </li>
+    </ol>
+  </div>
+
+  <!-- 3. Instructions for running script.js and app.js -->
+  <div class="card">
+    <h2>3. Running Terminal Scripts in this Practical</h2>
+    <p>Run these commands in your terminal inside this folder:</p>
+    <pre># 1. Print Hello World in Node.js
+node script.js
+
+# 2. Create and save a JSON object to app_data.json
+node app.js</pre>
+  </div>
+
+  <!-- Embedded JavaScript directly inside HTML -->
+  <script>
+    // 5. Identifying application title for subsequent practicals
+    const APP_TITLE = "FSD Practical 01: JavaScript & Node.js";
+    document.getElementById("appTitle").innerText = APP_TITLE;
+
+    // Embedded JavaScript function
+    function displayGreeting() {
+      const message = "Hello from embedded JavaScript inside HTML! Current time: " + new Date().toLocaleTimeString();
+      document.getElementById("embeddedOutput").innerText = message;
+      console.log(message);
+    }
+  </script>
+
+</body>
+</html>

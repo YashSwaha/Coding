@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practical 2: Browser To-Do List</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f6f8; color: #333; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h1 { margin-top: 0; color: #2c3e50; }
+    .input-group { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type="text"] { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 10px 16px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+    button:hover { background-color: #219150; }
+    .btn-delete { background-color: #e74c3c; padding: 6px 12px; }
+    .btn-delete:hover { background-color: #c0392b; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+    li.completed span { text-decoration: line-through; color: #888; }
+    .note-box { background-color: #e8f4fd; border-left: 4px solid #3498db; padding: 12px; margin-top: 25px; font-size: 14px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Simple To-Do List</h1>
+    <p>Demonstrating JavaScript array of JSON-style objects with localStorage persistence.</p>
+
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="Enter a new task..." />
+      <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <!-- Explanation: localStorage vs Server-Side JSON file -->
+    <div class="note-box">
+      <strong>Important Concept:</strong><br>
+      Browser <code>localStorage</code> saves data as key-value string pairs directly inside the client's browser engine. It persists across reloads on this machine only.<br>
+      In contrast, a <strong>JSON file stored on a server</strong> (e.g., <code>tasks.json</code> managed by Node.js) resides on the backend host and can be accessed, shared, and queried concurrently by multiple client sessions.
+    </div>
+  </div>
+
+  <script>
+    // In-memory array of task objects (JSON-style)
+    let tasks = [];
+
+    // Load tasks from browser localStorage on page load
+    function loadTasks() {
+      const stored = localStorage.getItem('fsd_tasks');
+      if (stored) {
+        tasks = JSON.parse(stored);
+      } else {
+        // Initial sample tasks
+        tasks = [
+          { id: 1, text: "Learn JSON syntax", completed: true },
+          { id: 2, text: "Build browser To-Do list", completed: false }
+        ];
+        saveTasks();
+      }
+      renderTasks();
+    }
+
+    // Save tasks to browser localStorage
+    function saveTasks() {
+      localStorage.setItem('fsd_tasks', JSON.stringify(tasks));
+    }
+
+    // Render tasks list in DOM
+    function renderTasks() {
+      const listElement = document.getElementById('taskList');
+      listElement.innerHTML = '';
+
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        if (task.completed) li.classList.add('completed');
+
+        li.innerHTML = `
+          <div>
+            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+            <span>${task.text}</span>
+          </div>
+          <button class="btn-delete" onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        listElement.appendChild(li);
+      });
+    }
+
+    // 1. Add Task
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) {
+        alert("Please enter a task description!");
+        return;
+      }
+
+      const newTask = {
+        id: Date.now(),
+        text: text,
+        completed: false
+      };
+
+      tasks.push(newTask);
+      saveTasks();
+      renderTasks();
+      input.value = '';
+    }
+
+    // 2. Mark Task as Completed
+    function toggleTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.completed = !task.completed;
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    // 3. Delete Task
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    // Initialize list on load
+    loadTasks();
+  </script>
+
+</body>
+</html>

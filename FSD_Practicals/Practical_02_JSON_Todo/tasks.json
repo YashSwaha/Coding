@@ -1,0 +1,19 @@
+{
+  "project": "College Assignments",
+  "totalTasks": 3,
+  "categories": [
+    {
+      "categoryName": "Frontend",
+      "tasks": [
+        { "id": 1, "title": "Design Responsive Layout", "completed": true },
+        { "id": 2, "title": "Add Bootstrap Styles", "completed": false }
+      ]
+    },
+    {
+      "categoryName": "Backend",
+      "tasks": [
+        { "id": 3, "title": "Connect to MySQL Database", "completed": false }
+      ]
+    }
+  ]
+}
